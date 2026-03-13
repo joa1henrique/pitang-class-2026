@@ -1,20 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { LoginForm, type SignInForm } from "@/components/login-form";
+import { LoginForm } from "@/components/login-form";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_auth/login")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  function handleLogin(
-    event: React.FormEvent<HTMLFormElement>,
-    data: SignInForm,
-  ) {
-    event.preventDefault();
-
-    console.log(data);
-  }
+  const { handleLogin } = useAuth();
 
   return <LoginForm onSubmit={handleLogin} />;
 }

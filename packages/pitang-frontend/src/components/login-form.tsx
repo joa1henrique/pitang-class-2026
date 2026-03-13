@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type SubmitEvent } from "react";
 
 export type SignInForm = {
-  email: string;
+  username: string;
   password: string;
 };
 
@@ -21,33 +21,33 @@ export function LoginForm({
   onSubmit,
   ...props
 }: React.ComponentProps<"form"> & {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: SignInForm) => void;
+  onSubmit: (event: SubmitEvent<HTMLFormElement>, data: SignInForm) => void;
 }) {
-  const [email, setEmail] = useState("");
+  const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <form
-      className={cn("flex flex-col gap-6", className)}
       {...props}
-      onSubmit={(event) => onSubmit(event, { email, password })}
+      className={cn("flex flex-col gap-6", className)}
+      onSubmit={(event) => onSubmit(event, { username, password })}
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Login to your account</h1>
           <p className="text-sm text-balance text-muted-foreground">
-            Enter your email below to login to your account
+            Enter your username below to login to your account
           </p>
         </div>
         <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <FieldLabel htmlFor="username">username</FieldLabel>
           <Input
-            id="email"
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="m@example.com"
+            id="username"
+            name="username"
+            onChange={(event) => setUserName(event.target.value)}
             required
-            type="email"
-            value={email}
+            type="text"
+            value={username}
           />
         </Field>
         <Field>
@@ -63,6 +63,7 @@ export function LoginForm({
           <Input
             id="password"
             onChange={(event) => setPassword(event.target.value)}
+            name="password"
             required
             type="password"
             value={password}
