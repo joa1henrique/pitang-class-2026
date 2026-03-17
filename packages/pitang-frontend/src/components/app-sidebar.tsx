@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/sidebar";
 import { FrameIcon, PieChartIcon, MapIcon, TerminalIcon, PackageIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import type { FileRouteTypes } from "@/routeTree.gen";
+
+type AppRouteTo = FileRouteTypes["to"];
 
 const data = {
   navMain: [],
@@ -39,17 +42,20 @@ const data = {
       url: "/dashboard/todos",
       icon: <FrameIcon />,
     },
-  ],
+  ] as { name: string; url: AppRouteTo; icon: React.ReactNode }[],
 };
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { loggedUser, handleLogout } = useAuth();
+  const firstName = loggedUser?.firstName ?? "";
+  const lastName = loggedUser?.lastName ?? "";
+  const fullName = `${firstName} ${lastName}`.trim();
 
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<a href="#" />}>
+            <SidebarMenuButton size="lg" render={<button type="button" />}>
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <TerminalIcon className="size-4" />
               </div>
@@ -75,7 +81,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           user={{
             avatar: loggedUser?.image || "",
             email: loggedUser?.email || "",
-            name: `${loggedUser?.firstName} ${loggedUser?.lastName}` || "",
+            name: fullName,
           }}
         />
       </SidebarFooter>
