@@ -1,5 +1,7 @@
-import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
+import { useAuth } from "@/hooks/use-auth";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -22,6 +24,14 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { loggedUser, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !loggedUser) {
+      navigate({ to: "/login" });
+    }
+  }, [loggedUser, isLoading, navigate]);
 
   const paths = location.pathname.split("/").filter(Boolean);
 

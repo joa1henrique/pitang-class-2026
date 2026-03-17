@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { LoginForm } from "@/components/login-form";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -8,7 +8,14 @@ export const Route = createFileRoute("/_auth/login")({
 });
 
 function RouteComponent() {
-  const { handleLogin } = useAuth();
+  const { loggedUser } = useAuth();
+  const navigate = useNavigate();
 
-  return <LoginForm onSubmit={handleLogin} />;
+  useEffect(() => {
+    if (loggedUser) {
+      navigate({ to: "/dashboard" });
+    }
+  }, [loggedUser, navigate]);
+
+  return <LoginForm />;
 }

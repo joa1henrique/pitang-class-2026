@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
-import { useState, type SubmitEvent } from "react";
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 export type SignInForm = {
   username: string;
@@ -18,19 +20,38 @@ export type SignInForm = {
 
 export function LoginForm({
   className,
-  onSubmit,
   ...props
-}: React.ComponentProps<"form"> & {
-  onSubmit: (event: SubmitEvent<HTMLFormElement>, data: SignInForm) => void;
-}) {
+}: React.ComponentProps<"form">) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const response = await fetch("https://dummyjson.com/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        password,
+        expiresInMins: 30,
+      }),
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      toast.error(json.message || "Login failed");
+      return;
+    }
+    toast.success("Welcome...");
+    document.cookie = `@pitang/accessToken=${json.accessToken}; path=/; Max-Age=86400`;
+    navigate({ to: "/dashboard" });
+  }
 
   return (
     <form
       {...props}
       className={cn("flex flex-col gap-6", className)}
-      onSubmit={(event) => onSubmit(event, { username, password })}
+      onSubmit={handleSubmit}
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">

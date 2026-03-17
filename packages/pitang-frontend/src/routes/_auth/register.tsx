@@ -1,11 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
-
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { SignupForm } from "@/components/signup-form";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_auth/register")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { loggedUser } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedUser) {
+      navigate({ to: "/dashboard" });
+    }
+  }, [loggedUser, navigate]);
+
   return <SignupForm />;
 }
