@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
@@ -20,23 +19,36 @@ import {
   ShareIcon,
   Trash2Icon,
 } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import type { FileRouteTypes } from "@/routeTree.gen";
+
+type AppRouteTo = FileRouteTypes["to"];
 
 export function NavProjects({
   projects,
 }: {
   projects: {
     name: string;
-    url: string;
+    url: AppRouteTo;
     icon: React.ReactNode;
   }[];
 }) {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton render={<a href={item.url} />}>
+            <SidebarMenuButton
+              render={
+                <button
+                  type="button"
+                  onClick={() => navigate({ to: item.url })}
+                />
+              }
+            >
               {item.icon}
               <span>{item.name}</span>
             </SidebarMenuButton>
