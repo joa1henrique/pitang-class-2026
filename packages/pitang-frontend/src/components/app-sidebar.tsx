@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { PieChartIcon, TerminalIcon, PackageIcon } from "lucide-react";
+import { FrameIcon, PieChartIcon, MapIcon, TerminalIcon, PackageIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import type { FileRouteTypes } from "@/routeTree.gen";
 
@@ -31,6 +31,16 @@ const data = {
       name: "Products",
       url: "/dashboard/products",
       icon: <PackageIcon />,
+    },
+    {
+      name: "Users",
+      url: "/dashboard/users",
+      icon: <MapIcon />,
+    },
+    {
+      name: "Todos",
+      url: "/dashboard/todos",
+      icon: <FrameIcon />,
     },
   ] as { name: string; url: AppRouteTo; icon: React.ReactNode }[],
 };
