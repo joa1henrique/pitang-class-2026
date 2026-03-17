@@ -21,7 +21,7 @@ function RouteComponent() {
       <div className="absolute top-6 right-6 md:top-8 md:right-12 flex gap-4 z-50">
         <Button 
           variant="outline" 
-          className="bg-black text-white border-white/20 hover:bg-white/10 cursor-pointer"
+          className="bg-black text-white border-2 border-white/70 hover:bg-white/30 hover:text-white cursor-pointer"
           onClick={handleLogin}
         >
           Login
